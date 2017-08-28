@@ -1,0 +1,33 @@
+{
+  "name": "pos-simulator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "build": "tsc",
+    "postinstall": "npm run build",
+    "start": "npm run build && node dist/app.js"
+  },
+  "keywords": [
+    "retail",
+    "iot",
+    "bi",
+    "big",
+    "data"
+  ],
+  "author": "ericsk",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/mqtt": "0.0.34",
+    "@types/node": "^8.0.25",
+    "nodemon": "^1.11.0",
+    "ts-node": "^3.3.0",
+    "typescript": "^2.4.2"
+  },
+  "dependencies": {
+    "azure-iot-device": "^1.1.17",
+    "azure-iot-device-mqtt": "^1.1.17",
+    "azure-iothub": "^1.1.14",
+    "documentdb": "^1.12.2"
+  }
+}
