@@ -28,6 +28,7 @@
     "azure-iot-device": "^1.1.17",
     "azure-iot-device-mqtt": "^1.1.17",
     "azure-iothub": "^1.1.14",
+    "dateformat": "^2.0.0",
     "documentdb": "^1.12.2"
   }
 }

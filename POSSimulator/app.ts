@@ -1,17 +1,21 @@
 import * as iothub from 'azure-iothub';
 import * as iothubMqtt from 'azure-iot-device-mqtt';
 import { Message } from 'azure-iot-device';
+import * as dateformat from 'dateformat';
 
 import { DocDBHelper } from './utils';
 import { config } from './config';
 
 let docdbHelper: DocDBHelper;
-let devices: Array<any> = [];
+let iothubRetistry: any;
 let databaseLink: any;
 let collectionLink: any;
 
 function initAsync(): Promise<void> {
     return new Promise((resolve, reject) => {
+        // initialize IoT Hub client registry
+        iothubRetistry  = iothub.Registry.fromConnectionString(`HostName=${config.iothub.host};SharedAccessKeyName=iothubowner;SharedAccessKey=${config.iothub.key}`);
+
         docdbHelper = new DocDBHelper(config.docdb.host, config.docdb.authKey);
         docdbHelper.getOrCreateDatabase(config.docdb.databaseId)
             .then((db: any) => {
@@ -25,19 +29,17 @@ function initAsync(): Promise<void> {
     });
 }
 
-function registerNewDevices() {
+function registerNewDevices(deviceId: string): Promise<any> {
     return new Promise((resolve, reject) => {
-        let registry  = iothub.Registry.fromConnectionString(config.iothub.connectionString);
-        for (let i = 0; i < config.num_devices; ++i) {
-            let device = { deviceId: `POS_${i}` };
-            registry.create(device, (err, deviceInfo, response) => {
-                if (err) {
-                    registry.get(device.deviceId, storeDeviceInDb);
-                } else {
-                    storeDeviceInDb(err, deviceInfo, response);                
-                }
-            });
-        }    
+        let device = { 'deviceId': deviceId };
+        iothubRetistry.create(device, (err, deviceInfo, response) => {
+            if (err) {
+                iothubRetistry.get(device.deviceId, storeDeviceInDb);
+            } else {
+                storeDeviceInDb(err, deviceInfo, response);                
+            }
+            resolve(deviceInfo);
+        });
     });
 }
 
@@ -55,9 +57,16 @@ function createOrLoadDevices(): Promise<Array<any>> {
             .then((devices) => {
                 if (devices.length == 0) {
                     // REGISTER new
-                    registerNewDevices().then(() => {
+                    let deviceCreationPromises: Array<Promise<void>> = [];
+                    
+                    for (let i = 0; i < config.num_devices; ++i) {
+                        deviceCreationPromises.push(registerNewDevices(`POS_${i}`));
+                    }
+
+                    Promise.all(deviceCreationPromises).then((devices) => {
                         resolve(devices);
-                    });
+                    })
+
                 } else {
                     resolve(devices);
                 }
@@ -70,10 +79,15 @@ initAsync()
         return createOrLoadDevices();
     }).then((devices: Array<any>) => {
         for (let i = 0; i < devices.length; ++i) {
-            let client = iothubMqtt.clientFromConnectionString(`HostName=skretail.documents.azure.com;DeviceId=POS_${i};SharedAccessKey=${devices[i].authentication.symmetricKey.primaryKey}`);            
+            let client = iothubMqtt.clientFromConnectionString(`HostName=${config.iothub.host};DeviceId=${devices[i].deviceId};SharedAccessKey=${devices[i].authentication.symmetricKey.primaryKey}`);
             /* send message in 1s interval. */
             setInterval(() => {
-                let data = { deviceId: `POS_${i}`, productId: 1 + Math.floor(Math.random() * 15), quantity: 1 + Math.floor(Math.random() * 5) };
+                let data = { 
+                    deviceId: `${devices[i].deviceId}`, 
+                    productId: 1 + Math.floor(Math.random() * 15), 
+                    quantity: 1 + Math.floor(Math.random() * 5),
+                    eventDate: dateformat(new Date(), "yyyy-MM-ddTHH:mm:ssZ")
+                };
                 let message = new Message(JSON.stringify(data));
                 console.log(`Sending message ${message.getData()}...`);
                 client.sendEvent(message, (err, res) => {
