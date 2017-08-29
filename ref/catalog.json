@@ -1,0 +1,16 @@
+{ "productId": "1", "name": "綠茶", "price": 20, "category": "飲食" }
+{ "productId": "2", "name": "紅茶", "price": 20, "category": "飲食" }
+{ "productId": "3", "name": "便當", "price": 60, "category": "飲食" }
+{ "productId": "4", "name": "咖啡", "price": 50, "category": "飲食" }
+{ "productId": "5", "name": "麵包", "price": 40, "category": "飲食" }
+{ "productId": "6", "name": "美工刀", "price": 20, "category": "文具" }
+{ "productId": "7", "name": "原子筆", "price": 15, "category": "文具" }
+{ "productId": "8", "name": "雨衣", "price": 80, "category": "衣物" }
+{ "productId": "9", "name": "雨傘", "price": 120, "category": "衣物" }
+{ "productId": "10", "name": "內衣", "price": 150, "category": "衣物" }
+{ "productId": "11", "name": "內褲", "price": 100, "category": "衣物" }
+{ "productId": "12", "name": "玩具", "price": 200, "category": "玩具" }
+{ "productId": "13", "name": "醬油", "price": 150, "category": "家用品" }
+{ "productId": "14", "name": "衛生紙", "price": 60, "category": "家用品" }
+{ "productId": "15", "name": "維他命", "price": 250, "category": "醫藥保健" }
+{ "productId": "16", "name": "提神飲料", "price": 60, "category": "醫藥保健" }

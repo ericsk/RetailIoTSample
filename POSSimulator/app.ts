@@ -84,7 +84,7 @@ initAsync()
             setInterval(() => {
                 let data = { 
                     deviceId: `${devices[i].deviceId}`, 
-                    productId: 1 + Math.floor(Math.random() * 15), 
+                    productId: 1 + Math.floor(Math.random() * 16), 
                     quantity: 1 + Math.floor(Math.random() * 5),
                     eventDate: dateformat(new Date(), "yyyy-MM-ddTHH:mm:ssZ")
                 };
