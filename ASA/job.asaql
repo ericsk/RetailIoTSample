@@ -1,0 +1,19 @@
+WITH AllEvents AS (
+SELECT
+    productId, Count(productId) as [totalSold]
+FROM 
+    POSInput TIMESTAMP BY eventDate
+GROUP BY
+    productId, TumblingWindow(minute, 5)
+)
+
+SELECT 
+    a.productId, b.name, a.totalSold, b.category
+INTO
+    SellingBI
+FROM 
+    AllEvents a 
+JOIN 
+    ProductCatalog as b on a.productId = b.productId
+
+SELECT eventDate, productId, quantity INTO Archive FROM POSInput TIMESTAMP BY eventDate
