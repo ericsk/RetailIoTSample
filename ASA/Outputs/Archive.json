@@ -1,0 +1,29 @@
+{
+    "Name": "Archive",
+    "DataSourceType": "Blob Storage",
+    "EventHubProperties": null,
+    "BlobStorageProperties": {
+      "Container": "archive",
+      "DateFormat": "yyyy/MM/dd",
+      "PathPattern": "logs/{date}",
+      "StorageAccounts": [
+        {
+          "AccountKey": "{BLOB_ACCOUNT_KEY}",
+          "AccountName": "{BLOB_ACCOUNT_NAME}"
+        }
+      ],
+      "TimeFormat": "HH"
+    },
+    "SQLDatabaseProperties": null,
+    "TableStorageProperties": null,
+    "ServiceBusQueueProperties": null,
+    "ServiceBusTopicProperties": null,
+    "DocumentDbProperties": null,
+    "Serialization": {
+      "Encoding": "UTF8",
+      "Type": "Json",
+      "FieldDelimiter": null,
+      "Format": "LineSeparated"
+    },
+    "ScriptType": "Output"
+  }

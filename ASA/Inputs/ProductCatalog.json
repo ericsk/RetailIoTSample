@@ -1,0 +1,28 @@
+{
+    "Name": "ProductCatalog",
+    "Type": "Reference data",
+    "DataSourceType": "Blob Storage",
+    "Sample": null,
+    "EventHubProperties": null,
+    "BlobStorageProperties": null,
+    "IoTHubProperties": null,
+    "BlobReferenceProperties": {
+      "Container": "data",
+      "DateFormat": "yyyy/MM/dd",
+      "PathPattern": "catalog.json",
+      "StorageAccounts": [
+        {
+          "AccountKey": "{ACCOUNT_KEY}",
+          "AccountName": "{ACCOUNT_NAME}"
+        }
+      ],
+      "TimeFormat": "HH"
+    },
+    "Serialization": {
+      "Encoding": "UTF8",
+      "Type": "Json",
+      "FieldDelimiter": null,
+      "Format": "LineSeparated"
+    },
+    "ScriptType": "Input"
+  }
