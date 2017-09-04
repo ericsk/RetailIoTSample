@@ -7,9 +7,9 @@
     "BlobStorageProperties": null,
     "IoTHubProperties": null,
     "BlobReferenceProperties": {
-      "Container": "data",
+      "Container": "ref",
       "DateFormat": "yyyy/MM/dd",
-      "PathPattern": "catalog.json",
+      "PathPattern": "catalog/catalog.json",
       "StorageAccounts": [
         {
           "AccountKey": "{ACCOUNT_KEY}",

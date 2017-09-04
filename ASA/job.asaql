@@ -16,4 +16,4 @@ FROM
 JOIN 
     ProductCatalog as b on a.productId = b.productId
 
-SELECT eventDate, productId, quantity INTO Archive FROM POSInput TIMESTAMP BY eventDate
+SELECT eventDate, userId, productId, quantity, price INTO Archive FROM POSInput TIMESTAMP BY eventDate

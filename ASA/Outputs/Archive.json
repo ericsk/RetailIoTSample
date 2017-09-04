@@ -3,9 +3,9 @@
     "DataSourceType": "Blob Storage",
     "EventHubProperties": null,
     "BlobStorageProperties": {
-      "Container": "archive",
+      "Container": "logs",
       "DateFormat": "yyyy/MM/dd",
-      "PathPattern": "logs/{date}",
+      "PathPattern": "{date}",
       "StorageAccounts": [
         {
           "AccountKey": "{BLOB_ACCOUNT_KEY}",
