@@ -2,6 +2,8 @@
 
 This project shows how to bring IoT and Big Data scenario to transform the retail store business.
 
+![Solution Architecture](assets/images/architecture.png)
+
 # Projects
 
 * **POSSimulator**: Generate retail events and send the events to the Azure IoT Hub.
