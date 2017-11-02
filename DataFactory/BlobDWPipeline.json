@@ -1,0 +1,44 @@
+{
+    "name": "BlobDWPipeline",
+    "properties": {
+        "description": "將資料從 Blob 轉送到 SQL Data Warehouse 的管線",
+        "activities": [
+            {
+                "type": "Copy",
+                "name": "HiveToDWActivity",
+                "typeProperties": {
+                    "source": {
+                        "type": "BlobSource"
+                    },
+                    "sink": {
+                        "type": "SqlDWSink",
+                        "sqlWriterCleanupScript": "$$Text.Format('DELETE FROM adw.FactWebsiteActivity WHERE EventDate >= \\'{0:yyyy-MM-dd HH:mm}\\' AND EventDate < \\'{1:yyyy-MM-dd HH:mm}\\'', WindowStart, WindowEnd)",
+                        "writeBatchSize": 0,
+                        "writeBatchTimeout": "00:00:00"
+                    }
+                },
+                "inputs": [
+                    {
+                        "name": "StoreActivityBlob"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "StoreActivitySQL"
+                    }
+                ],
+                "policy": {
+                    "timeout": "1.00:00:00",
+                    "concurrency": 1,
+                    "retry": 3
+                },
+                "scheduler": {
+                    "frequency": "Day",
+                    "interval": 1
+                }
+            }
+        ],
+        "start": "2017-11-01T00:00:00Z",
+        "end": "2017-11-03T00:00:00Z"
+    }
+}

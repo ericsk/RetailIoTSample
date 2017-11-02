@@ -1,0 +1,36 @@
+{
+    "name": "StoreActivitySQL",
+    "properties": {
+        "type": "AzureSqlDWTable",
+        "linkedServiceName": "AzureSqlDWLinkedService",
+        "structure": [
+            {
+            "name": "EventDate",
+            "type": "Datetime"
+            },
+            {
+            "name": "UserId",
+            "type": "String"
+            },
+            {
+            "name": "ProductId",
+            "type": "String"
+            },
+            {
+            "name": "Quantity",
+            "type": "Int32"
+            },
+            {
+            "name": "Price",
+            "type": "Int32"
+            }
+        ],
+        "typeProperties": {
+            "tableName": "adw.FactStoreActivity"
+        },
+        "availability": {
+            "frequency": "Day",
+            "interval": 1
+        }
+    }
+}

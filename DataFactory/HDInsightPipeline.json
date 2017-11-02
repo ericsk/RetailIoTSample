@@ -1,0 +1,77 @@
+{
+    "name": "HadoopPipeline",
+    "properties": {
+        "description": "資料轉換的管線",
+        "activities": [
+            {
+                "type": "HDInsightHive",
+                "typeProperties": {
+                    "scriptPath": "scripts\\addpartitions.hql",
+                    "scriptLinkedService": "AzureStorageLinkedService",
+                    "defines": {
+                        "StorageAccountName": "skretailstore",
+                        "Year": "$$Text.Format('{0:yyyy}',SliceStart)",
+                        "Month": "$$Text.Format('{0:MM}',SliceStart)",
+                        "Day": "$$Text.Format('{0:dd}',SliceStart)"
+                    }
+                },
+                "inputs": [
+                    {
+                        "name": "RawJsonData"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "DummyDataset"
+                    }
+                ],
+                "policy": {
+                    "timeout": "01:00:00",
+                    "concurrency": 1,
+                    "retry": 3
+                },
+                "scheduler": {
+                    "frequency": "Day",
+                    "interval": 1
+                },
+                "name": "CreatePartitionHiveActivity",
+                "linkedServiceName": "HDInsightOnDemandLinkedService"
+            },
+            {
+                "type": "HDInsightHive",
+                "typeProperties": {
+                    "scriptPath": "scripts\\structuredlogs.hql",
+                    "scriptLinkedService": "AzureStorageLinkedService",
+                    "defines": {
+                        "Year": "$$Text.Format('{0:yyyy}',SliceStart)",
+                        "Month": "$$Text.Format('{0:MM}',SliceStart)",
+                        "Day": "$$Text.Format('{0:dd}',SliceStart)"
+                    }
+                },
+                "inputs": [
+                    {
+                        "name": "DummyDataset"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "StoreActivityBlob"
+                    }
+                ],
+                "policy": {
+                    "timeout": "01:00:00",
+                    "concurrency": 1,
+                    "retry": 3
+                },
+                "scheduler": {
+                    "frequency": "Day",
+                    "interval": 1
+                },
+                "name": "ProcessDataHiveActivity",
+                "linkedServiceName": "HDInsightOnDemandLinkedService"
+            }
+        ],
+        "start": "2017-11-01T00:00:00Z",
+        "end": "2017-11-03T00:00:00Z"
+    }
+}

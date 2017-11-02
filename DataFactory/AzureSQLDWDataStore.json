@@ -1,0 +1,11 @@
+{
+    "name": "AzureSqlDWLinkedService",
+    "properties": {
+        "description": "",
+        "hubName": "skretaildf_hub",
+        "type": "AzureSqlDW",
+        "typeProperties": {
+            "connectionString": "Data Source=tcp:skretail.database.windows.net,1433;Initial Catalog=skretaildw;Integrated Security=False;User ID=skretail;Password=**********;Connect Timeout=30;Encrypt=True"
+        }
+    }
+}
