@@ -1,8 +1,10 @@
-# Retail IoT Sample (Under construction)
+# Retail IoT Sample
 
 This project shows how to bring IoT and Big Data scenario to transform the retail store business.
 
 ![Solution Architecture](assets/images/architecture.png)
+
+Detail article is [here](https://medium.com/@ericsk/以零售為例-動手實作以資料驅動的商業決策系統-938c42f394fc) (Traditional Chinese).
 
 # Projects
 
