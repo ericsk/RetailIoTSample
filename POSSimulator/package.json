@@ -25,10 +25,10 @@
     "typescript": "^2.4.2"
   },
   "dependencies": {
-    "azure-iot-device": "^1.1.17",
-    "azure-iot-device-mqtt": "^1.1.17",
-    "azure-iothub": "^1.1.14",
+    "azure-iot-device": "^1.2.0",
+    "azure-iot-device-mqtt": "^1.2.1",
+    "azure-iothub": "^1.1.18",
     "dateformat": "^2.0.0",
-    "documentdb": "^1.12.2"
+    "documentdb": "^1.13.0"
   }
 }
