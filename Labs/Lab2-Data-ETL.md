@@ -13,7 +13,7 @@
 
 1. 建立 Azure 儲存體帳戶，這部份的原則與 [Lab1](Lab1-Data-Ingestion.md) 操作時相似，只是這裡我們單純用它來存放 HDInsight cluster 所產生的檔案或 logs。
 
-2. 建立 Azure SQL Database，效能可以選擇 S0 即可，而建立時注意位置要選擇與 Lab1 建立的資源相同的資料中心位置。
+2. 建立 Azure SQL Database，效能可以選擇 **S0** 即可，而建立時注意位置要選擇與 Lab1 建立的資源相同的資料中心位置。
 
 3. 建立 Azure HDInsight 資源 (注意選擇發行商為 Microsoft 的版本)：（您可以視需要自行調整叢集大小，或是保留預設值）
 
@@ -29,4 +29,19 @@
 
 ## Step 2: 在 HDInsight 中載入資料並存成 Hive table
 
+1. 根據建立的 HDInsight cluster 內容，打開瀏覽器連結 https://xxxx.azurehdinsight.net/ 登入 cluster 的 web 管理界面 (Ambari)，登入後在右上角的按鈕切換成 **Hive view**。
 
+   ![Ambari web 管理介面切換檢視](images/ambari_hiveview.png)
+
+
+2. 提交一個 Hive query 如下 (儲存體帳號名稱，以及路徑中的日期請根據真實情況做修改) ，_這個查詢就是主要把資料從 Blob 儲存體讀進來，並且產生一個 hive table 來儲存它_。順利完成後，可以在填寫查詢的右側面板或是 _TABLE_ 頁面觀察是不是有建立 `logsraw` 的 Hive table。
+
+    ```
+    CREATE EXTERNAL TABLE IF NOT EXISTS LogsRaw (jsonentry string) PARTITIONED BY (year INT, month INT, day INT) STORED AS TEXTFILE LOCATION "wasbs://logs@example.blob.core.windows.net/";
+    
+    ALTER TABLE LogsRaw ADD IF NOT EXISTS PARTITION (year=2017, month=10, day=31) LOCATION "wasbs://logs@example.blob.core.windows.net/2017/10/31";
+    
+    SELECT * from LogsRaw limit 1;
+    ```
+
+   ![檢視目前建立的 Hive tables](images/ambari_hivetables.png)
