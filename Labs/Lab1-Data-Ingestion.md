@@ -88,3 +88,7 @@
 ## Check Point
 
 觀察訊息是否有正確地被存入 Storage 中。
+
+## 下一步
+
+如果這個 lab 沒有問題了，就可以進入到 [Lab 2: Data ETL](Lab2-Data-ETL.md) 的部份。
