@@ -15,5 +15,7 @@ Detail article is [here](https://medium.com/@ericsk/以零售為例-動手實作
 * **SQL Data Warehouse**: SQL Data Warehouse query scripts.
 * **Azure Data Factory**: Azure Data Factory pipeline definitions.
 
+* **Labs**: Step by step hands-on labs (in Chinese).
+
 # Code of Conduct
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
