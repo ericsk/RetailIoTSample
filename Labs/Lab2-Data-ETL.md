@@ -147,7 +147,7 @@
         userid, 
         productid,
         SUM(quantity) AS qty 
-      FROM websiteActivity
+      FROM storeActivity
       WHERE eventdate > date_sub(from_unixtime(unix_timestamp()),30)
       GROUP BY userid, productid
       ORDER BY userid ASC, qty DESC) a
