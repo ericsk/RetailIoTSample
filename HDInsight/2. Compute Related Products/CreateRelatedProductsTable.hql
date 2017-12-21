@@ -1,12 +1,12 @@
 DROP VIEW IF EXISTS unique_purchases;
 	CREATE VIEW unique_purchases AS 
 	SELECT distinct userid, productid
-	FROM websiteActivity where eventdate > date_sub(from_unixtime(unix_timestamp()),30);
+	FROM storeActivity where eventdate > date_sub(from_unixtime(unix_timestamp()),30);
 
 	DROP VIEW IF EXISTS all_purchased_products;
 	CREATE VIEW all_purchased_products AS 
 	SELECT a.userid, COLLECT_LIST(CONCAT(a.productid,',',a.qty)) as product_list from (
-  	 SELECT userid, productid, sum(quantity) as qty FROM websiteActivity
+  	 SELECT userid, productid, sum(quantity) as qty FROM storeActivity
    	 WHERE eventdate > date_sub(from_unixtime(unix_timestamp()),30)
    	 GROUP BY userid, productid
    	 ORDER BY userid ASC, qty DESC) a
