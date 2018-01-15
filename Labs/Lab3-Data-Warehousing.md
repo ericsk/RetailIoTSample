@@ -52,11 +52,11 @@
   );
   ```
 
-如果沒有錯誤訊息，就表示建立成功。
+如果沒有錯誤訊息，就表示建立成功。
 
-## Step 4: 建立外部表格
+## Step 4: 建立外部表格
 
-接下來，我們可以在 Azure SQL Data Warehouse 中建立**外部表格** (external table) 將它關連到我們處理過資料的 hive table 中，這個步驟很簡單，只要新增一筆 SQL 查詢：
+接下來，我們可以在 Azure SQL Data Warehouse 中建立 **外部表格** (external table) 將它關連到我們處理過資料的 hive table 中，這個步驟很簡單，只要新增一筆 SQL 查詢：
 
   ```sql
   CREATE SCHEMA [asb]
