@@ -53,3 +53,29 @@
   ```
 
 如果沒有錯誤訊息，就表示建立成功。
+
+## Step 4: 建立外部表格
+
+接下來，我們可以在 Azure SQL Data Warehouse 中建立**外部表格** (external table) 將它關連到我們處理過資料的 hive table 中，這個步驟很簡單，只要新增一筆 SQL 查詢：
+
+  ```sql
+  CREATE SCHEMA [asb]
+  GO
+  
+  CREATE EXTERNAL TABLE asb.StoreActivityExternal
+  (
+    EventDate datetime2,
+    UserId nvarchar(20),
+    ProductId nvarchar(20), 
+    Quantity int, 
+    Price int
+  )
+  WITH (
+    LOCATION='/structuredlogs/',
+    DATA_SOURCE=AzureStorage,
+    FILE_FORMAT=TextFile
+  );
+  ```
+這樣便會在 Azure SQL DW 建立一個 `asb.StoreActivityExternal` 的表格，裡面就是 hive table 內的資料，如此一來，相容 SQL Server 的工具就可以直接查詢這個表格內的資料了。
+
+![建立完成的 external table](images/asdw_external_table.png)
