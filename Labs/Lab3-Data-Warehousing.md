@@ -108,3 +108,5 @@
   GO
   ```
 你會發現在建立這個真實表格時會花較久的時間，但是讀取的速度會加快許多。
+
+  > 注意：資料儲存在 Azure SQL DW 中會有額外的費用（依照儲存空間以及時間付費），詳情請參閱 [Azure SQL Data Warehouse 定價](https://azure.microsoft.com/zh-tw/pricing/details/sql-data-warehouse/elasticity/) 頁面。
