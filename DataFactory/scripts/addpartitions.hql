@@ -1,0 +1,2 @@
+ALTER TABLE LogsRaw ADD IF NOT EXISTS PARTITION (year=${hiveconf:Year}, month=${hiveconf:Month}, day=${hiveconf:Day}) LOCATION 'wasbs://logs@${hiveconf:StorageAccountName}.blob.core.windows.net/${hiveconf:Year}/${hiveconf:Month}/${hiveconf:Day}';
+ALTER TABLE websiteActivity ADD IF NOT EXISTS PARTITION (year=${hiveconf:Year}, month=${hiveconf:Month}, day=${hiveconf:Day}) LOCATION 'wasbs://processeddata@${hiveconf:StorageAccountName}.blob.core.windows.net/structuredlogs/${hiveconf:Year}/${hiveconf:Month}/${hiveconf:Day}';
