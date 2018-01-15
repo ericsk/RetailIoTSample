@@ -79,3 +79,32 @@
 這樣便會在 Azure SQL DW 建立一個 `asb.StoreActivityExternal` 的表格，裡面就是 hive table 內的資料，如此一來，相容 SQL Server 的工具就可以直接查詢這個表格內的資料了。
 
 ![建立完成的 external table](images/asdw_external_table.png)
+
+## Step 5: 建立 Fact 表格
+
+在前一個步驟我們建立了一個 external table，把 hive table 的內容有點像「轉換」成 SQL database 的表格，以方便相關的工具操作，外部表格的好處是它只是一個連結，所以只要你的資料有更新 (更新 hive table 的內容)，查詢這個 SQL DW 上的表格也會是最新的資料。但也因為這樣，每個查詢其實都是要回到 storage 上撈資料再來處理，這樣在資料的讀取上就會花費較長的時間。
+
+而建立真實表格 (fact table) 則是在建立時將資料讀入表格，雖然資料不會即時更新 (日後可再次讀入)，不過查詢時就直接從 Azure SQL DW 裡讀取，不會重新去 blob storage 裡拿。所以你可以根據資料的使用情境，來決定哪些資料適合建立外部表格，而哪些則適合建立真實表格。
+
+以下的查詢將會建立一個真實表格，用來查詢店內的活動記錄：
+
+  ```sql
+  CREATE SCHEMA [adw]
+  GO
+  
+  CREATE TABLE adw.FactStoreActivity
+  WITH (
+    CLUSTERED COLUMNSTORE INDEX,
+    DISTRIBUTION = HASH(ProductId)
+  )
+  AS
+  SELECT
+    EventDate,
+    UserId,
+    ProductId,
+    Quantity,
+    Price
+  FROM asb.StoreActivityExternal
+  GO
+  ```
+你會發現在建立這個真實表格時會花較久的時間，但是讀取的速度會加快許多。
