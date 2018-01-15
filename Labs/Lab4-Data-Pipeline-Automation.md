@@ -93,17 +93,17 @@
                    { "name": "Year", "value": { "type": "DateTime", "date": "SliceStart", "format": "yyyy" } },
                    { "name": "Month", "value": { "type": "DateTime", "date": "SliceStart", "format": "MM" } }, 
                    { "name": "Day", "value": { "type": "DateTime", "date": "SliceStart", "format": "dd" } }
-                ],
-                "format": {
-                    "type": "JsonFormat"
-                }
-            },
-            "availability": {
-                "frequency": "Day",
-                "interval": 1
-            },
-            "external": true
-        }
+               ],
+               "format": {
+                   "type": "JsonFormat"
+               }
+           },
+           "availability": {
+               "frequency": "Day",
+               "interval": 1
+           },
+           "external": true
+       }
    }
    ```
 
@@ -161,3 +161,43 @@
    }
    ```
 
+如果希望在資料管線 ETL 後的結果是放在 SQL Data Warehouse 中，那就要再加一筆 SQL DW 的**資料集**：
+
+   ```json
+   {
+       "name": "StoreActivitySQL",
+       "properties": {
+           "type": "AzureSqlDWTable",
+           "linkedServiceName": "AzureSqlDWLinkedService",
+           "structure": [
+               {
+                   "name": "EventDate",
+                   "type": "Datetime"
+               },
+               {
+                   "name": "UserId",
+                   "type": "String"
+               },
+               {
+                   "name": "ProductId",
+                   "type": "String"
+               },
+               {
+                   "name": "Quantity",
+                   "type": "Int32"
+               },
+               {
+                   "name": "Price",
+                   "type": "Int32"
+               }
+           ],
+           "typeProperties": {
+               "tableName": "adw.FactStoreActivity"
+           },
+           "availability": {
+               "frequency": "Day",
+               "interval": 1
+           }
+       }
+   }
+   ```
