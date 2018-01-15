@@ -76,3 +76,87 @@
 
 編寫完畢後，按下**部署**完成。
 
+### 編寫資料管線的輸入及輸出
+
+設定好資源，接下來就是設定資料管線的「流程」，首先是指定輸入的內容，這個部份是在告訴資料管線要去哪裡把資料送進來，在 Data Factory 中新增一個 _Azure Blob Storage_ 的 **資料集**：
+
+   ```json
+   {
+       "name": "RawJsonData",
+       "properties": {
+           "type": "AzureBlob",
+           "linkedServiceName": "AzureStorageLinkedService",
+           "typeProperties": {
+               "folderPath": "logs/{Year}/{Month}/{Day}",
+               "partitionedBy": [
+                   { "name": "Year", "value": { "type": "DateTime", "date": "SliceStart", "format": "yyyy" } },
+                   { "name": "Month", "value": { "type": "DateTime", "date": "SliceStart", "format": "MM" } }, 
+                   { "name": "Day", "value": { "type": "DateTime", "date": "SliceStart", "format": "dd" } }
+                ],
+                "format": {
+                    "type": "JsonFormat"
+                }
+            },
+            "availability": {
+                "frequency": "Day",
+                "interval": 1
+            },
+            "external": true
+        }
+   }
+   ```
+
+這裡指定了存放在 Azure Blob Storage 原始資料的格式，稍候我們便會利用這個資料集做為管線的輸入。
+
+編寫完畢後按下上方的**部署**按鈕。
+
+而相對的，還要再新增一個 _Azure Blob Storage_ 的**資料集**，做為預期的資料管線輸出結果：
+
+   ```json
+   {
+       "name": "StoreActivityBlob",
+       "properties": {
+           "type": "AzureBlob",
+           "linkedServiceName": "AzureStorageLinkedService",
+           "structure": [
+               {
+                   "name": "eventdate",
+                   "type": "Datetime"
+               },
+               {
+                   "name": "userid",
+                   "type": "String"
+               },
+               {
+                   "name": "productid",
+                   "type": "String"
+               },
+               {
+                   "name": "quantity",
+                   "type": "Int32"
+               },
+               {
+                   "name": "price",
+                   "type": "Int32"
+               }
+           ],
+           "typeProperties": {
+               "folderPath": "processeddata/structuredlogs/{Year}/{Month}/{Day}",
+               "partitionedBy": [
+                   { "name": "Year", "value": { "type": "DateTime", "date": "SliceStart", "format": "yyyy" } },
+                   { "name": "Month", "value": { "type": "DateTime", "date": "SliceStart", "format": "MM" } }, 
+                   { "name": "Day", "value": { "type": "DateTime", "date": "SliceStart", "format": "dd" } }
+               ],
+               "format": {
+                   "type": "TextFormat",
+                   "columnDelimiter": ","
+               }
+           },
+           "availability": {
+               "frequency": "Day",
+               "interval": 1
+           }
+       }
+   }
+   ```
+
