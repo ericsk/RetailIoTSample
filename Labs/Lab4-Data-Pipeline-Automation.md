@@ -16,7 +16,7 @@
 
 ### 編寫儲存體
 
-首先，點擊面板中的**編寫與部署**的按鈕，然後點選**新資料存放區**，新增一個 _Azure 儲存體_ 來增加 blob storage 的設定，然後在右側的範本編輯器中填入：
+首先，點擊面板中的**編寫與部署**的按鈕，然後點選**新資料存放區**，新增一個 _Azure 儲存體_ 來增加 blob storage 的設定，然後在右側的範本編輯器中填入：
 
    ```json
    {
@@ -31,9 +31,9 @@
        }
    }
    ```
-在上述 `connectionString` 中要把帳號名稱以及金鑰換成存放資料的儲存體的資訊。填寫完畢再按下上方的**部署**。
+在上述 `connectionString` 中要把帳號名稱以及金鑰換成存放資料的儲存體的資訊。填寫完畢再按下上方的**部署**。
 
-接著，再新增一筆 Azure SQL Data Warehouse 的資料存放區，在範本編輯區輸入：
+接著，再新增一筆 Azure SQL Data Warehouse 的資料存放區，在範本編輯區輸入：
 
    ```json
    {
@@ -48,13 +48,14 @@
        }
    }
    ```
-這裡一樣要把連線資訊換成在 Lab 3 所建立的 Azure SQL Data Warehouse 資訊。編寫完畢按下上方**部署**按鈕。
 
-### 新增 on-demand HDInsight Cluster
+這裡一樣要把連線資訊換成在 Lab 3 所建立的 Azure SQL Data Warehouse 資訊。編寫完畢按下上方**部署**按鈕。
 
-在整個資料管線中，我們會使用 HDInsight 來做 ETL 的操作（詳見 [Lab 2](Lab2-Data-ETL.md)），但如果事先建好 HDInsight Cluster 又會在不需要執行的情況下浪費資源（以我們的使用情境，一天做一次就可以了），所幸我們可以利用 Data Factory 來建立 on-demand HDInsight Cluster，這樣就是只有在需要做 ETL 時才會把 HDInsight Cluster 建立起來執行，執行完畢後就會刪除，對於自動化以及節省成本來說有很大的好處。
+### 新增依需求的 HDInsight Cluster
 
-只要在編寫管線中，新增一個計算資源，選擇**依需求的 HDInsight 叢集**，然後在範本編輯器裡填寫需要的規格，以及叢集生命長度。
+在整個資料管線中，我們會使用 HDInsight 來做 ETL 的操作（詳見 [Lab 2](Lab2-Data-ETL.md)），但如果事先建好 HDInsight Cluster 又會在不需要執行的情況下浪費資源（以我們的使用情境，一天做一次就可以了），所幸我們可以利用 Data Factory 來建立 on-demand HDInsight Cluster，這樣就是只有在需要做 ETL 時才會把 HDInsight Cluster 建立起來執行，執行完畢後就會刪除，對於自動化以及節省成本來說有很大的好處。
+
+只要在編寫管線中，新增一個計算資源，選擇**依需求的 HDInsight 叢集**，然後在範本編輯器裡填寫需要的規格，以及叢集生命長度。
 
    ```json
    {
@@ -72,13 +73,13 @@
        }
    }
    ```
-這裡的範例是設定運作一個小時，並且使用先前設定好的 storage 來做為這個 hdinsight cluster 的儲存體。
+這裡的範例是設定運作一個小時，並且使用先前設定好的 storage 來做為這個 hdinsight cluster 的儲存體。
 
 編寫完畢後，按下**部署**完成。
 
 ### 編寫資料管線的輸入及輸出
 
-設定好資源，接下來就是設定資料管線的「流程」，首先是指定輸入的內容，這個部份是在告訴資料管線要去哪裡把資料送進來，在 Data Factory 中新增一個 _Azure Blob Storage_ 的 **資料集**：
+設定好資源，接下來就是設定資料管線的「流程」，首先是指定輸入的內容，這個部份是在告訴資料管線要去哪裡把資料送進來，在 Data Factory 中新增一個 _Azure Blob Storage_ 的 **資料集**：
 
    ```json
    {
@@ -106,7 +107,7 @@
    }
    ```
 
-這裡指定了存放在 Azure Blob Storage 原始資料的格式，稍候我們便會利用這個資料集做為管線的輸入。
+這裡指定了存放在 Azure Blob Storage 原始資料的格式，稍候我們便會利用這個資料集做為管線的輸入。
 
 編寫完畢後按下上方的**部署**按鈕。
 
