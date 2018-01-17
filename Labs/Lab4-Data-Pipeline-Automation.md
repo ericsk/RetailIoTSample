@@ -201,3 +201,86 @@
        }
    }
    ```
+
+### 編寫管線
+
+資料集與資料輸入輸出都準備好了之後，就可以來編寫**資料管線**了，在編寫的介面中加入一筆**管線**，然後在範本編輯器中填入：
+
+   ```json
+   {
+       "name": "HadoopPipeline",
+       "properties": {
+           "description": "資料轉換的管線",
+           "activities": [{
+               "type": "HDInsightHive",
+               "typeProperties": {
+                   "scriptPath": "scripts\\addpartitions.hql",
+                   "scriptLinkedService": "AzureStorageLinkedService",
+                   "defines": {
+                       "StorageAccountName": "skretailstore",
+                       "Year": "$$Text.Format('{0:yyyy}',SliceStart)",
+                       "Month": "$$Text.Format('{0:MM}',SliceStart)",
+                       "Day": "$$Text.Format('{0:dd}',SliceStart)"
+                   }
+               },
+               "inputs": [{
+                   "name": "RawJsonData"
+               }],
+               "outputs": [{
+                   "name": "DummyDataset"
+               }],
+               "policy": {
+                   "timeout": "01:00:00",
+                   "concurrency": 1,
+                   "retry": 3
+               },
+               "scheduler": {
+                   "frequency": "Day",
+                   "interval": 1
+               },
+               "name": "CreatePartitionHiveActivity",
+               "linkedServiceName": "HDInsightOnDemandLinkedService"
+           }, {
+               "type": "HDInsightHive",
+               "typeProperties": {
+                   "scriptPath": "scripts\\structuredlogs.hql",
+                   "scriptLinkedService": "AzureStorageLinkedService",
+                   "defines": {
+                       "Year": "$$Text.Format('{0:yyyy}',SliceStart)",
+                       "Month": "$$Text.Format('{0:MM}',SliceStart)",
+                       "Day": "$$Text.Format('{0:dd}',SliceStart)"
+                   }
+               },
+               "inputs": [{
+                   "name": "DummyDataset"
+               }],
+               "outputs": [{
+                   "name": "StoreActivityBlob"
+               }],
+               "policy": {
+                   "timeout": "01:00:00",
+                   "concurrency": 1,
+                   "retry": 3
+               },
+               "scheduler": {
+                   "frequency": "Day",
+                   "interval": 1
+               },
+               "name": "ProcessDataHiveActivity",
+               "linkedServiceName": "HDInsightOnDemandLinkedService"
+           }],
+           "start": "2018-01-01T00:00:00Z",
+           "end": "2018-01-31T00:00:00Z"
+       }
+   }
+   ```
+
+這裡會看到有兩個 _活動 (activity)_，分別對應到兩個 hive query，這裡我們把 hive query 存成 hql 檔案然後放在 blob storage 裡，如此一來就可以直接指定要執行的 hive query。
+
+部建完成後，你可以在 Data Factory 的面板中點選 **監視及管理** 看到圖像化的資料管線：
+
+![](images/datapipeline.png)
+
+而且可以在其中 `HadoopPipeline` 按右鍵開啟看到更細部的活動：
+
+![](images/datapipeline_activity.png)
