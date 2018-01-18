@@ -161,6 +161,29 @@
    }
    ```
 
+接著再新增一個 `DummyDataset` 的資料集，做為 hive query 之間的 placeholder：
+
+   ```json
+   {
+        "name": "DummyDataset",
+        "properties": {
+            "published": false,
+            "type": "AzureBlob",
+            "linkedServiceName": "AzureStorageLinkedService",
+            "typeProperties": {
+                "folderPath": "dummy",
+                "format": {
+                    "type": "TextFormat"
+                }
+            },
+            "availability": {
+                "frequency": "Day",
+                "interval": 1
+            }
+        }
+    }
+   ```
+
 如果希望在資料管線 ETL 後的結果是放在 SQL Data Warehouse 中，那就要再加一筆 SQL DW 的**資料集**：
 
    ```json
