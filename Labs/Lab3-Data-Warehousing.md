@@ -15,8 +15,6 @@
 
 > 而由於 SQL DW 的單價較高，建議先將效能調整至 **DW100** 來進行 lab。做完 Lab 也請記得務必要刪除 SQL DW 的 instance。
 
-![建立 SQL Data Warehouse 的參考圖](images/creating_sqldw.png)
-
 ## Step 2: 連線至 Azure SQL Data Warehouse
 
 使用 Azure SQL Data Warehouse 的好處之一，就是它相容所有管理 SQL Server 的工具，所以您可以使用像是 SQL Server Management Studio (SSMS) 或是 Visual Studio 中的 SQL Server Data Tools (SSDT) 來管理它。而在這個 lab 中，我們使用也是由 Microsoft 官方所推出跨平台的 SQL Operations Studio 來操作我們建立的 Azure SQL Data Warehouse。
